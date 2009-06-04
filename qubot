@@ -16,7 +16,7 @@ class Qubot:
     self.xmlstream.sendFooter()
 
   def message(self, element):
-    if element['from'].startswith(str(jid)) and element.body:
+    if element['from'].startswith(unicode(jid)) and element.body:
       message = domish.Element((None, 'message'))
       message['to'] = 'qubit@conference.jabber.org'
       message['type'] = 'groupchat'
