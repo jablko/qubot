@@ -17,17 +17,23 @@ class Qubot:
 
   def message(self, element):
     if element['from'].startswith(unicode(jid)) and element.body:
-      message = domish.Element((None, 'message'))
+      message = element
+
+      del message['from']
+
       message['to'] = 'qubit@conference.jabber.org'
       message['type'] = 'groupchat'
-      message.addElement('body', content=str(element.body))
+
       self.xmlstream.send(message)
 
     if 'qubit@conference.jabber.org/qubot' != element['from'] and element.body and re.search('qubot', str(element.body), re.I):
       message = domish.Element((None, 'message'))
+
       message['to'] = 'qubit@conference.jabber.org'
       message['type'] = 'groupchat'
+
       message.addElement('body', content='don\'t taunt qubot')
+
       self.xmlstream.send(message)
 
   def authd(self, xmlstream):
