@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import re
+from twisted.application import internet, service
 from twisted.internet import reactor
 from twisted.words.protocols.jabber import client, jid, xmlstream
 from twisted.words.xish import domish
@@ -72,5 +73,5 @@ factory.addBootstrap(xmlstream.STREAM_AUTHD_EVENT, qubot.authd)
 factory.addBootstrap(xmlstream.STREAM_CONNECTED_EVENT, qubot.connected)
 factory.addBootstrap(xmlstream.STREAM_END_EVENT, qubot.end)
 
-reactor.connectTCP('talk.google.com', 5222, factory)
-reactor.run()
+application = service.Application('qubot')
+internet.TCPClient('talk.google.com', 5222, factory).setServiceParent(application)
