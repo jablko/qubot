@@ -40,7 +40,7 @@ class Qubot:
   def authd(self, xmlstream):
     self.xmlstream = xmlstream
 
-    # Send initial presence
+    # Send initial presence,
     # http://xmpp.org/internet-drafts/draft-saintandre-rfc3921bis-07.html#presence-initial
     presence = domish.Element((None, 'presence'))
     self.xmlstream.send(presence)
@@ -74,4 +74,5 @@ factory.addBootstrap(xmlstream.STREAM_CONNECTED_EVENT, qubot.connected)
 factory.addBootstrap(xmlstream.STREAM_END_EVENT, qubot.end)
 
 application = service.Application('qubot')
-internet.TCPClient('talk.google.com', 5222, factory).setServiceParent(application)
+service = internet.TCPClient('talk.google.com', 5222, factory)
+service.setServiceParent(application)
