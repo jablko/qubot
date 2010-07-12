@@ -16,26 +16,26 @@ class Qubot:
   def initFailed(self, failure):
     self.xmlstream.sendFooter()
 
-  def message(self, element):
-    if element['from'].startswith(unicode(jid)) and element.body:
-      message = element
+  def message(self, recv):
+    if recv['from'].startswith(unicode(jid)) and recv.body:
+      send = recv
 
-      del message['from']
+      del send['from']
 
-      message['to'] = 'qubit@conference.jabber.org'
-      message['type'] = 'groupchat'
+      send['to'] = 'qubit@conference.jabber.org'
+      send['type'] = 'groupchat'
 
-      self.xmlstream.send(message)
+      self.xmlstream.send(send)
 
-    if 'qubit@conference.jabber.org/qubot' != element['from'] and element.body and re.search('qubot', str(element.body), re.I):
-      message = domish.Element((None, 'message'))
+    if 'qubit@conference.jabber.org/qubot' != recv['from'] and recv.body and re.search('qubot', str(recv.body), re.I):
+      send = domish.Element((None, 'message'))
 
-      message['to'] = 'qubit@conference.jabber.org'
-      message['type'] = 'groupchat'
+      send['to'] = 'qubit@conference.jabber.org'
+      send['type'] = 'groupchat'
 
-      message.addElement('body', content='don\'t taunt qubot')
+      send.addElement('body', content='don\'t taunt qubot')
 
-      self.xmlstream.send(message)
+      self.xmlstream.send(send)
 
   def authd(self, xmlstream):
     self.xmlstream = xmlstream
