@@ -16,15 +16,15 @@ class Qubot:
 
       del send['from']
 
-      send['to'] = 'qubit@conference.jabber.org'
+      send['to'] = room
       send['type'] = 'groupchat'
 
       self.xmlstream.send(send)
 
-    if 'qubit@conference.jabber.org/qubot' != recv['from'] and recv.body and re.search('qubot', str(recv.body), re.I):
+    if room + '/qubot' != recv['from'] and recv.body and re.search('qubot', str(recv.body), re.I):
       send = domish.Element((None, 'message'))
 
-      send['to'] = 'qubit@conference.jabber.org'
+      send['to'] = room
       send['type'] = 'groupchat'
 
       send.addElement('body', content='don\'t taunt qubot')
@@ -42,7 +42,7 @@ class Qubot:
     self.xmlstream.addObserver('/message', self.message)
 
     presence = domish.Element((None, 'presence'))
-    presence['to'] = 'qubit@conference.jabber.org/qubot'
+    presence['to'] = room + '/qubot'
     self.xmlstream.send(presence)
 
   def connected(self, xmlstream):
@@ -66,6 +66,8 @@ qubot = Qubot()
 
 jid = jid.JID('administrator@example.com')
 password = 'example'
+
+room = 'openarchives-dev@conference.jabber.org'
 
 factory = client.XMPPClientFactory(jid, password)
 factory.addBootstrap(xmlstream.INIT_FAILED_EVENT, qubot.initFailed)
