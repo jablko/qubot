@@ -11,6 +11,8 @@ class Qubot:
     self.xmlstream.sendFooter()
 
   def message(self, recv):
+
+    # JID defines __unicode__()
     if recv['from'].startswith(unicode(jid)) and recv.body:
       send = recv
 
