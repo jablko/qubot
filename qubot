@@ -6,12 +6,6 @@ from twisted.internet import reactor
 from twisted.words.protocols.jabber import client, jid, xmlstream
 from twisted.words.xish import domish
 
-def rawDataIn(data):
-  print 'RECV: ' + data
-
-def rawDataOut(data):
-  print 'SEND: ' + data
-
 class Qubot:
   def initFailed(self, failure):
     self.xmlstream.sendFooter()
@@ -53,6 +47,12 @@ class Qubot:
 
   def connected(self, xmlstream):
     self.xmlstream = xmlstream
+
+    def rawDataIn(buf):
+      print 'RECV: ' + buf
+
+    def rawDataOut(buf):
+      print 'SEND: ' + buf
 
     self.xmlstream.rawDataInFn = rawDataIn
     self.xmlstream.rawDataOutFn = rawDataOut
